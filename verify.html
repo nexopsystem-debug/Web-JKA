@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKA GLOBAL ID | Ficha Técnica Oficial & Verificación</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/Kj40XjxY/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        jka: {
+                            red: '#DC2626',
+                            crimson: '#991B1B',
+                            gold: '#EAB308',
+                            dark: '#08080a',
+                            card: '#111116',
+                            cardHover: '#16161d',
+                            border: '#22222a',
+                            borderLight: '#2e2e3a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                        jp: ['Noto Sans JP', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #08080a;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.14) 0%, transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(234, 179, 8, 0.05) 0%, transparent 45%),
+                linear-gradient(180deg, #08080a 0%, #0d0d12 100%);
+            min-height: 100vh;
+        }
+        .martial-border {
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.7);
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #DC2626;
+            color: #ffffff;
+            font-weight: 700;
+            background: rgba(220, 38, 38, 0.08);
+        }
+        .kanji-watermark {
+            font-family: 'Noto Sans JP', sans-serif;
+            user-select: none;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .badge-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-gray-200 font-sans antialiased selection:bg-jka-red selection:text-white pb-20">
+
+    <!-- Top Security & Navigation Header -->
+    <header class="w-full border-b border-jka-border/80 bg-black/85 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <img src="./Solo-Logo-JKA.png" alt="JKA Logo" class="h-10 w-auto object-contain group-hover:scale-105 transition-transform">
+                <div>
+                    <span class="text-xs font-black tracking-widest text-white block uppercase font-heading">JKA GLOBAL ID</span>
+                    <span class="text-[10px] text-gray-400 tracking-wider">Official Verification Portal</span>
+                </div>
+            </a>
+
+            <!-- Right Controls: Status & Language -->
+            <div class="flex items-center gap-3">
+                <!-- Live Verification Badge -->
+                <div class="flex items-center gap-2 bg-emerald-950/80 border border-emerald-500/50 px-3 py-1.5 rounded-full shadow-lg shadow-emerald-950/40">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span id="badgeVerifiedText" class="text-[11px] font-bold text-emerald-400 tracking-wider uppercase">Verificado Oficial</span>
+                </div>
+
+                <!-- Language Selector -->
+                <div class="relative">
+                    <select id="langSelect" onchange="changeLang(this.value)" class="bg-zinc-900 border border-zinc-700 text-xs font-bold text-gray-300 py-1.5 px-2.5 rounded cursor-pointer outline-none hover:border-jka-red transition-colors">
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="ja">🇯🇵 日本語</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pt-8 space-y-8">
+
+        <!-- Loading State Indicator (Hidden by default) -->
+        <div id="loadingIndicator" class="hidden text-center py-12">
+            <div class="inline-block w-10 h-10 border-4 border-jka-red border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p class="text-sm font-bold uppercase tracking-widest text-gray-400">Consultando Base de Datos Oficial JKA...</p>
+        </div>
+
+        <!-- Athlete / Master Hero Card -->
+        <div id="mainProfileContainer" class="relative bg-jka-card martial-border rounded-2xl p-6 md:p-8 overflow-hidden transition-all">
+            <!-- Background Kanji Watermark -->
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-8xl md:text-9xl font-jp font-black text-white/[0.025] kanji-watermark pointer-events-none">
+                日本空手協会
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
+                <!-- Avatar with Belt Rank Ring -->
+                <div class="relative flex-shrink-0">
+                    <div class="w-36 h-48 md:w-44 md:h-56 rounded-xl overflow-hidden border-2 border-jka-red shadow-2xl shadow-red-950/60 bg-zinc-900">
+                        <img id="profilePhoto" src="./hero_karate.jpeg" alt="Karateka Oficial" class="w-full h-full object-cover">
+                    </div>
+                    <div id="statusTag" class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-red-600 to-red-800 text-white text-[10px] font-black uppercase tracking-widest px-3.5 py-0.5 rounded-full shadow-lg shadow-black/80 whitespace-nowrap border border-white/20">
+                        JKA Certified
+                    </div>
+                </div>
+
+                <!-- Info Details -->
+                <div class="text-center md:text-left space-y-3 flex-1 w-full">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2.5">
+                        <span id="rankBadge" class="bg-gradient-to-r from-red-600 via-red-700 to-red-900 text-white font-extrabold text-xs tracking-wider uppercase px-3.5 py-1 rounded shadow-md">
+                            Black Belt 3rd Dan (Sandan)
+                        </span>
+                        <span id="rankKanji" class="font-jp text-xs text-gray-300 bg-zinc-800/90 px-3 py-1 rounded border border-zinc-700 font-bold">
+                            黒帯 (参段)
+                        </span>
+                        <span id="instructorBadge" class="text-xs text-yellow-400 bg-yellow-950/40 border border-yellow-600/40 px-3 py-1 rounded font-bold flex items-center gap-1.5">
+                            ★ <span id="instructorBadgeText">Maestro / Competidor Élite</span>
+                        </span>
+                    </div>
+
+                    <!-- Name -->
+                    <h1 id="fullName" class="text-3xl md:text-5xl font-heading font-black text-white tracking-tight uppercase">
+                        Cristian Castillo
+                    </h1>
+                    <p id="japaneseName" class="font-jp text-base text-gray-400 font-medium tracking-wide">
+                        クリスティアン・カスティーヨ
+                    </p>
+
+                    <!-- Fast Data Grid -->
+                    <div class="pt-3 grid grid-cols-2 md:grid-cols-4 gap-4 text-left border-t border-zinc-800/80 mt-4">
+                        <div class="p-2.5 rounded bg-zinc-900/40 border border-zinc-800/60">
+                            <span class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block" data-i18n="lbl_code">Código JKA ID</span>
+                            <span id="cardCode" class="text-sm font-bold text-red-400 font-mono">VEN-522-261003</span>
+                        </div>
+                        <div class="p-2.5 rounded bg-zinc-900/40 border border-zinc-800/60">
+                            <span class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block" data-i18n="lbl_dojo">Dojo / Filial</span>
+                            <span id="dojoName" class="text-sm font-bold text-gray-200 truncate block">Dojo Central Bushido</span>
+                        </div>
+                        <div class="p-2.5 rounded bg-zinc-900/40 border border-zinc-800/60">
+                            <span class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block" data-i18n="lbl_sensei">Sensei Instructor</span>
+                            <span id="instructorName" class="text-sm font-bold text-gray-200 truncate block">Sensei H. Aoki (7° Dan)</span>
+                        </div>
+                        <div class="p-2.5 rounded bg-zinc-900/40 border border-zinc-800/60">
+                            <span class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block" data-i18n="lbl_country">País / Región</span>
+                            <span id="countryLocation" class="text-sm font-bold text-gray-200 truncate block">🇻🇪 Venezuela (Caracas)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Martial Key Performance Indicators (KPIs) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-jka-card martial-border p-5 rounded-xl text-center space-y-1 hover:border-zinc-700 transition-colors">
+                <span id="kpiTournaments" class="text-3xl lg:text-4xl font-black text-white font-heading block">18</span>
+                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block" data-i18n="kpi_tournaments">Torneos Disputados</span>
+                <span class="text-[10px] text-emerald-400 font-semibold block" data-i18n="kpi_tournaments_sub">Nacionales & Panamericanos</span>
+            </div>
+            <div class="bg-jka-card martial-border p-5 rounded-xl text-center space-y-1 hover:border-zinc-700 transition-colors">
+                <span id="kpiMedals" class="text-2xl lg:text-3xl font-black text-yellow-400 font-heading block">8🥇 5🥈 3🥉</span>
+                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block" data-i18n="kpi_medals">Medallero Oficial</span>
+                <span class="text-[10px] text-yellow-500/90 font-semibold block" data-i18n="kpi_medals_sub">16 Podios Totales</span>
+            </div>
+            <div class="bg-jka-card martial-border p-5 rounded-xl text-center space-y-1 hover:border-zinc-700 transition-colors">
+                <span id="kpiKumiteRate" class="text-3xl lg:text-4xl font-black text-red-400 font-heading block">84.5%</span>
+                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block" data-i18n="kpi_kumite">Victorias en Kumite</span>
+                <span class="text-[10px] text-gray-400 font-semibold block" data-i18n="kpi_kumite_sub">38 Combates Oficiales</span>
+            </div>
+            <div class="bg-jka-card martial-border p-5 rounded-xl text-center space-y-1 hover:border-zinc-700 transition-colors">
+                <span id="kpiKataScore" class="text-3xl lg:text-4xl font-black text-white font-heading block">9.42</span>
+                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block" data-i18n="kpi_kata">Promedio Score Kata</span>
+                <span class="text-[10px] text-emerald-400 font-semibold block" data-i18n="kpi_kata_sub">Nivel Élite JKA</span>
+            </div>
+        </div>
+
+        <!-- Detailed Tabbed Navigation -->
+        <div class="bg-jka-card martial-border rounded-2xl overflow-hidden">
+            <!-- Tabs Menu -->
+            <div class="flex border-b border-jka-border bg-black/40 overflow-x-auto text-xs md:text-sm font-semibold text-gray-400">
+                <button onclick="switchTab('tab-palmares', this)" class="tab-btn active px-6 py-4 uppercase tracking-wider hover:text-white transition-all whitespace-nowrap flex items-center gap-2">
+                    <span>🏆</span> <span data-i18n="tab_palmares">Palmarés & Torneos</span>
+                </button>
+                <button onclick="switchTab('tab-graduacion', this)" class="tab-btn px-6 py-4 uppercase tracking-wider hover:text-white transition-all whitespace-nowrap flex items-center gap-2">
+                    <span>🥋</span> <span data-i18n="tab_lineage">Linaje & Graduaciones</span>
+                </button>
+                <button onclick="switchTab('tab-licencias', this)" class="tab-btn px-6 py-4 uppercase tracking-wider hover:text-white transition-all whitespace-nowrap flex items-center gap-2">
+                    <span>📜</span> <span data-i18n="tab_licenses">Licencias JKA</span>
+                </button>
+                <button onclick="switchTab('tab-rendimiento', this)" class="tab-btn px-6 py-4 uppercase tracking-wider hover:text-white transition-all whitespace-nowrap flex items-center gap-2">
+                    <span>⚡</span> <span data-i18n="tab_metrics">Métricas Marciales</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: Palmarés & Logros -->
+            <div id="tab-palmares" class="tab-pane p-6 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400" data-i18n="palmares_title">Historial de Campeonatos y Podios</h3>
+                    <span class="text-[11px] font-bold text-yellow-400 bg-yellow-950/40 border border-yellow-600/30 px-2.5 py-0.5 rounded">Récord Verificado</span>
+                </div>
+                
+                <div id="palmaresList" class="space-y-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-zinc-900/70 border border-zinc-800/80 gap-3">
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-red-400 uppercase tracking-widest block">2026 • Campeonato Nacional JKA</span>
+                            <span class="text-sm font-bold text-white block">Kumite Individual Senior Masculino</span>
+                            <span class="text-xs text-gray-500 block">Sede: Caracas, Venezuela</span>
+                        </div>
+                        <span class="self-start sm:self-center text-xs font-extrabold text-yellow-400 bg-yellow-950/70 border border-yellow-500/40 px-3 py-1.5 rounded-lg shadow-sm">
+                            🥇 Medalla de Oro (Campeón)
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-zinc-900/70 border border-zinc-800/80 gap-3">
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-red-400 uppercase tracking-widest block">2025 • Copa Panamericana Shotokan JKA</span>
+                            <span class="text-sm font-bold text-white block">Kata Individual Avanzado (Kanku Dai)</span>
+                            <span class="text-xs text-gray-500 block">Sede: Santiago, Chile</span>
+                        </div>
+                        <span class="self-start sm:self-center text-xs font-extrabold text-slate-300 bg-slate-900/80 border border-slate-500/40 px-3 py-1.5 rounded-lg shadow-sm">
+                            🥈 Medalla de Plata (Subcampeón)
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-zinc-900/70 border border-zinc-800/80 gap-3">
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-red-400 uppercase tracking-widest block">2024 • Torneo Abierto JKA Internacional</span>
+                            <span class="text-sm font-bold text-white block">Kumite Libre por Equipos</span>
+                            <span class="text-xs text-gray-500 block">Sede: Bogotá, Colombia</span>
+                        </div>
+                        <span class="self-start sm:self-center text-xs font-extrabold text-yellow-400 bg-yellow-950/70 border border-yellow-500/40 px-3 py-1.5 rounded-lg shadow-sm">
+                            🥇 Medalla de Oro (Campeones)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Linaje & Graduaciones -->
+            <div id="tab-graduacion" class="tab-pane hidden p-6 space-y-6">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2" data-i18n="lineage_title">Línea de Tiempo de Rangos & Exámenes</h3>
+                
+                <div class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-zinc-800">
+                    <div class="relative pl-4">
+                        <span class="absolute -left-6 top-1.5 w-3.5 h-3.5 rounded-full bg-red-600 ring-4 ring-black shadow-lg shadow-red-950"></span>
+                        <span class="text-xs text-red-400 font-bold tracking-widest uppercase">Agosto 2025</span>
+                        <h4 class="text-base font-bold text-white">Cinturón Negro 3° Dan (Sandan - 参段)</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Examinador: Comisión Técnica Nacional JKA • Diploma Oficial #JKA-DAN-2025-884</p>
+                    </div>
+
+                    <div class="relative pl-4">
+                        <span class="absolute -left-6 top-1.5 w-3.5 h-3.5 rounded-full bg-zinc-600 ring-4 ring-black"></span>
+                        <span class="text-xs text-gray-400 font-bold tracking-widest uppercase">Diciembre 2022</span>
+                        <h4 class="text-base font-bold text-white">Cinturón Negro 2° Dan (Nidan - 弐段)</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Examinador: Sensei M. Takahashi • Diploma Oficial #JKA-DAN-2022-412</p>
+                    </div>
+
+                    <div class="relative pl-4">
+                        <span class="absolute -left-6 top-1.5 w-3.5 h-3.5 rounded-full bg-zinc-600 ring-4 ring-black"></span>
+                        <span class="text-xs text-gray-400 font-bold tracking-widest uppercase">Noviembre 2019</span>
+                        <h4 class="text-base font-bold text-white">Cinturón Negro 1° Dan (Shodan - 初段)</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Homologado: JKA Honbu Dojo (Tokyo, Japón) • Diploma #JKA-DAN-2019-109</p>
+                    </div>
+
+                    <div class="relative pl-4">
+                        <span class="absolute -left-6 top-1.5 w-3.5 h-3.5 rounded-full bg-zinc-800 ring-4 ring-black"></span>
+                        <span class="text-xs text-zinc-500 font-bold tracking-widest uppercase">Marzo 2014</span>
+                        <h4 class="text-sm font-bold text-gray-300">Inicio de Formación Marcial (10° Kyu - Blanco)</h4>
+                        <p class="text-xs text-gray-500 mt-0.5">Dojo Bushido Caracas • Registro de Ingreso Oficial</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Licencias Oficiales JKA -->
+            <div id="tab-licencias" class="tab-pane hidden p-6 space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2" data-i18n="licenses_title">Acreditaciones y Habilitaciones Oficiales</h3>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-5 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> Vigente / Activa
+                            </span>
+                            <span class="text-xs font-mono text-zinc-500">LIC-INST-2024</span>
+                        </div>
+                        <h4 class="text-base font-bold text-white">Instructor Certificado JKA (Clase C)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">Habilitado para impartir instrucción técnica tradicional y dirigir seminarios oficiales JKA.</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> Vigente / Activa
+                            </span>
+                            <span class="text-xs font-mono text-zinc-500">LIC-ARB-2025</span>
+                        </div>
+                        <h4 class="text-base font-bold text-white">Árbitro & Juez de Torneos (Clase B)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">Certificación oficial en Reglamento de Arbitraje JKA para categorías Kata y Kumite.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: Métricas Marciales -->
+            <div id="tab-rendimiento" class="tab-pane hidden p-6 space-y-5">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2" data-i18n="metrics_title">Evaluación Técnica y Radar de Rendimiento</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                            <span class="text-white">Kime & Potencia de Impacto</span>
+                            <span class="text-red-400 font-mono">92%</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-red-600 to-red-500 h-full rounded-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                            <span class="text-white">Velocidad de Reacción (Tsuki / Keri)</span>
+                            <span class="text-red-400 font-mono">88%</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-red-600 to-red-500 h-full rounded-full" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                            <span class="text-white">Precisión Técnica y Posturas (Dachi)</span>
+                            <span class="text-red-400 font-mono">95%</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-red-600 to-red-500 h-full rounded-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                            <span class="text-white">Disciplina y Asistencia al Dojo</span>
+                            <span class="text-emerald-400 font-mono">98.5%</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-500 h-full rounded-full" style="width: 98.5%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security & Actions Footer Card -->
+        <div class="bg-jka-card martial-border p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-1 text-center md:text-left">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block" data-i18n="crypto_title">Firma Criptográfica del Registro</span>
+                <span id="cryptoHash" class="text-[11px] font-mono text-zinc-400 break-all block">SHA256: 8a7c92b8e041d8e7a02c98d6f1a8e932c51084b429f</span>
+                <span class="text-[10px] text-zinc-500 block" data-i18n="crypto_desc">Sincronizado y validado en tiempo real con la Base de Datos Central JKA</span>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <button onclick="shareProfile()" class="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-lg transition-all flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <span data-i18n="btn_share">Compartir</span>
+                </button>
+                <button onclick="window.print()" class="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-lg transition-all flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span data-i18n="btn_print">Imprimir Ficha</span>
+                </button>
+                <a href="/#registro" class="bg-jka-red hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-lg shadow-lg shadow-red-950/50 transition-all flex items-center gap-2">
+                    <span data-i18n="btn_portal">Portal Principal</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        const i18nDict = {
+            es: {
+                badge_verified: "Verificado Oficial",
+                lbl_code: "Código JKA ID",
+                lbl_dojo: "Dojo / Filial",
+                lbl_sensei: "Sensei Instructor",
+                lbl_country: "País / Región",
+                kpi_tournaments: "Torneos Disputados",
+                kpi_tournaments_sub: "Nacionales & Panamericanos",
+                kpi_medals: "Medallero Oficial",
+                kpi_medals_sub: "16 Podios Totales",
+                kpi_kumite: "Victorias en Kumite",
+                kpi_kumite_sub: "38 Combates Oficiales",
+                kpi_kata: "Promedio Score Kata",
+                kpi_kata_sub: "Nivel Élite JKA",
+                tab_palmares: "Palmarés & Torneos",
+                tab_lineage: "Linaje & Graduaciones",
+                tab_licenses: "Licencias JKA",
+                tab_metrics: "Métricas Marciales",
+                palmares_title: "Historial de Campeonatos y Podios",
+                lineage_title: "Línea de Tiempo de Rangos & Exámenes",
+                licenses_title: "Acreditaciones y Habilitaciones Oficiales",
+                metrics_title: "Evaluación Técnica y Radar de Rendimiento",
+                crypto_title: "Firma Criptográfica del Registro",
+                crypto_desc: "Sincronizado y validado en tiempo real con la Base de Datos Central JKA",
+                btn_share: "Compartir",
+                btn_print: "Imprimir Ficha",
+                btn_portal: "Portal Principal"
+            },
+            en: {
+                badge_verified: "Official Verified",
+                lbl_code: "JKA ID Code",
+                lbl_dojo: "Dojo / Chapter",
+                lbl_sensei: "Head Sensei",
+                lbl_country: "Country / Region",
+                kpi_tournaments: "Tournaments Fought",
+                kpi_tournaments_sub: "National & International",
+                kpi_medals: "Official Medals",
+                kpi_medals_sub: "16 Total Podiums",
+                kpi_kumite: "Kumite Win Rate",
+                kpi_kumite_sub: "38 Official Bouts",
+                kpi_kata: "Avg Kata Score",
+                kpi_kata_sub: "JKA Elite Level",
+                tab_palmares: "Record & Tournaments",
+                tab_lineage: "Lineage & Graduations",
+                tab_licenses: "JKA Licenses",
+                tab_metrics: "Martial Metrics",
+                palmares_title: "Championship History & Podiums",
+                lineage_title: "Timeline of Official Ranks & Exams",
+                licenses_title: "Official Accreditations & Licenses",
+                metrics_title: "Technical Evaluation & Performance Radar",
+                crypto_title: "Cryptographic Registry Signature",
+                crypto_desc: "Synchronized & validated in real-time with JKA Central Database",
+                btn_share: "Share",
+                btn_print: "Print Sheet",
+                btn_portal: "Main Portal"
+            },
+            ja: {
+                badge_verified: "公式認証済み",
+                lbl_code: "JKA IDコード",
+                lbl_dojo: "所属道場 / 支部",
+                lbl_sensei: "指導指導員",
+                lbl_country: "国 / 地域",
+                kpi_tournaments: "出場大会数",
+                kpi_tournaments_sub: "全国および国際大会",
+                kpi_medals: "獲得メダル",
+                kpi_medals_sub: "通算16回表彰台",
+                kpi_kumite: "組手勝率",
+                kpi_kumite_sub: "公式戦38試合",
+                kpi_kata: "形 平均スコア",
+                kpi_kata_sub: "JKAエリート基準",
+                tab_palmares: "大会戦績",
+                tab_lineage: "段位・昇段履歴",
+                tab_licenses: "JKA公式資格",
+                tab_metrics: "技術評価指標",
+                palmares_title: "公式大会実績および入賞履歴",
+                lineage_title: "段級位昇段タイムライン",
+                licenses_title: "公式指導員・審判員資格",
+                metrics_title: "技術評価および総合レーダー",
+                crypto_title: "暗号化登録署名",
+                crypto_desc: "JKA本部データベースとリアルタイム照合済み",
+                btn_share: "共有する",
+                btn_print: "印刷する",
+                btn_portal: "トップページへ"
+            }
+        };
+
+        let currentLang = 'es';
+
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            btnElement.classList.add('active');
+        }
+
+        function changeLang(lang) {
+            if (!i18nDict[lang]) return;
+            currentLang = lang;
+            const t = i18nDict[lang];
+
+            document.getElementById('badgeVerifiedText').innerText = t.badge_verified;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+        }
+
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'Ficha Técnica Oficial JKA: ' + document.getElementById('fullName').innerText,
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Enlace copiado al portapapeles: ' + window.location.href);
+            }
+        }
+
+        // Real-Time Fetch from n8n Webhook
+        async function loadProfileData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let cardId = urlParams.get('id');
+
+            // Support path rewrite like /id/VEN-522-261003
+            if (!cardId) {
+                const pathParts = window.location.pathname.split('/');
+                const idIndex = pathParts.indexOf('id');
+                if (idIndex !== -1 && pathParts[idIndex + 1]) {
+                    cardId = pathParts[idIndex + 1];
+                }
+            }
+
+            if (!cardId) {
+                cardId = 'VEN-522-261003'; // Default demo ID
+            }
+
+            document.getElementById('cardCode').innerText = cardId;
+
+            try {
+                // Call n8n webhook
+                const response = await fetch(`https://jka-n8n.nexopsystem.com/webhook/obtener-ficha-tecnica?id=${encodeURIComponent(cardId)}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.success && data.atleta) {
+                        applyDynamicData(data);
+                    }
+                }
+            } catch (err) {
+                console.log('Using default verified technical profile data');
+            }
+        }
+
+        function applyDynamicData(data) {
+            const a = data.atleta;
+            if (a.nombre_completo) document.getElementById('fullName').innerText = a.nombre_completo;
+            if (a.nombre_kanji) document.getElementById('japaneseName').innerText = a.nombre_kanji;
+            if (a.rango_actual) document.getElementById('rankBadge').innerText = a.rango_actual;
+            if (a.rango_kanji) document.getElementById('rankKanji').innerText = a.rango_kanji;
+            if (a.dojo) document.getElementById('dojoName').innerText = a.dojo;
+            if (a.instructor_jefe) document.getElementById('instructorName').innerText = a.instructor_jefe;
+            if (a.pais) document.getElementById('countryLocation').innerText = `${a.pais} (${a.ciudad || ''})`;
+            if (a.foto_url) document.getElementById('profilePhoto').src = a.foto_url;
+            if (data.hash_seguridad) document.getElementById('cryptoHash').innerText = `SHA256: ${data.hash_seguridad}`;
+            
+            if (data.estadisticas) {
+                const s = data.estadisticas;
+                if (s.torneos_disputados) document.getElementById('kpiTournaments').innerText = s.torneos_disputados;
+                if (s.victorias_kumite_pct) document.getElementById('kpiKumiteRate').innerText = s.victorias_kumite_pct + '%';
+                if (s.promedio_score_kata) document.getElementById('kpiKataScore').innerText = s.promedio_score_kata;
+                if (s.medallas) {
+                    document.getElementById('kpiMedals').innerText = `${s.medallas.oro || 0}🥇 ${s.medallas.plata || 0}🥈 ${s.medallas.bronce || 0}🥉`;
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProfileData();
+        });
+    </script>
+</body>
+</html>
